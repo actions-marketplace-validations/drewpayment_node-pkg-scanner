@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/******/ (() => { // webpackBootstrap
+require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
 /***/ 1627:
@@ -57202,3 +57202,4 @@ function fixResponseChunkedTransferBadEnding(request, errorCallback) {
 /******/ 	
 /******/ })()
 ;
+//# sourceMappingURL=index.js.map

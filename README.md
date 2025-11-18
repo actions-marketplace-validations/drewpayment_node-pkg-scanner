@@ -72,6 +72,59 @@ bun run cli scan --directory ./my-project
 bun run cli scan --no-fail
 ```
 
+### Standalone Binary (No Dependencies)
+
+For teams that want to use the scanner without installing Node.js, npm, or Bun, you can use the pre-compiled standalone binaries:
+
+#### Building Binaries
+
+**Option 1: Multi-platform build (Development/Testing)**
+```bash
+# Clone the repository and build all binaries from one machine
+git clone https://github.com/drewpayment/node-pkg-scanner.git
+cd node-pkg-scanner
+bun install
+bun run build:binaries
+```
+
+**Option 2: Native platform builds (Production - Recommended)**
+```bash
+# On each target platform, run:
+bun run build:binary
+```
+
+**For production distribution**, use Option 2 for best compatibility:
+- Run `bun run build:binary` on macOS → Creates `node-pkg-scanner-macos`
+- Run `bun run build:binary` on Windows → Creates `node-pkg-scanner-windows.exe`  
+- Run `bun run build:binary` on Linux → Creates `node-pkg-scanner-linux`
+
+This creates platform-specific binaries with optimal compatibility.
+
+#### Preinstall Hook Usage
+
+The most powerful use case is integrating the scanner into npm's preinstall hook to prevent compromised packages from being installed:
+
+**Step 1**: Place the appropriate binary in your project (e.g., in a `security/` directory)
+
+**Step 2**: Add to your `package.json`:
+
+```json
+{
+  "scripts": {
+    "preinstall": "./security/node-pkg-scanner-macos scan --quiet || (echo '❌ Security scan failed - aborting install' && exit 1)"
+  }
+}
+```
+
+**Step 3**: Make executable (Mac/Linux):
+```bash
+chmod +x security/node-pkg-scanner-macos
+```
+
+Now every time someone runs `npm install`, `yarn install`, or `pnpm install`, the scanner will run first and prevent installation if compromised packages are detected.
+
+See the [`examples/`](examples/) directory for platform-specific `package.json` examples and advanced configurations.
+
 ## Configuration
 
 ```yaml
@@ -139,6 +192,18 @@ bun run cli scan --no-fail
 
 # Quiet mode (minimal output)
 bun run cli scan --quiet
+```
+
+### Binary Usage
+
+```bash
+# Using standalone binary (no dependencies required)
+./security/node-pkg-scanner-macos scan
+./security/node-pkg-scanner-windows.exe scan  # Windows
+./security/node-pkg-scanner-linux scan        # Linux
+
+# All the same options are available
+./security/node-pkg-scanner-macos scan --config custom-config.yml --quiet
 ```
 
 ### Initialize Configuration

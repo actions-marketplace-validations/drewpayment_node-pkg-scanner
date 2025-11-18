@@ -5,6 +5,15 @@ build/
 lib/
 out/
 
+# Binary distributions (keep examples in examples/ directory)
+binaries/
+node-pkg-scanner-macos
+node-pkg-scanner-linux
+node-pkg-scanner-windows
+node-pkg-scanner-windows.exe
+node-pkg-scanner-binary
+node-pkg-scanner-binary.exe
+
 # Dependencies
 node_modules/
 npm-debug.log*

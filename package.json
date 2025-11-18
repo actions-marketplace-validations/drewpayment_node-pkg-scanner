@@ -9,6 +9,8 @@
   "scripts": {
     "build": "tsc && ncc build dist/index.js -o dist --source-map",
     "build:action": "npm run clean && tsc && ncc build dist/index.js -o dist && npm run clean:extras",
+    "dev:binaries": "./scripts/build-binaries.sh",
+    "build:binary": "./scripts/build-platform-binary.sh",
     "start": "node dist/index.js",
     "cli": "bun src/cli.ts",
     "test": "jest",

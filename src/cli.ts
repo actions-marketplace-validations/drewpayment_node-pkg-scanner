@@ -17,6 +17,7 @@ program
   .option('-d, --directory <path>', 'Root directory to scan', process.cwd())
   .option('--no-fail', 'Do not exit with error code when compromised packages found')
   .option('--quiet', 'Suppress non-essential output')
+  .option('--silent', 'Suppress all output (for preinstall hooks)')
   .action(async (options) => {
     try {
       if (!options.quiet) {
@@ -35,6 +36,9 @@ program
       if (options.fail !== false && summary.compromisedPackages.length > 0) {
         process.exit(1);
       }
+      
+      // Explicitly exit with success code
+      process.exit(0);
       
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
@@ -85,6 +89,7 @@ cacheTimeout: 60
     try {
       fs.writeFileSync(configPath, defaultConfig);
       console.log(`✅ Created config file: ${configPath}`);
+      process.exit(0);
     } catch (error) {
       console.error(`❌ Failed to create config file: ${error}`);
       process.exit(1);
